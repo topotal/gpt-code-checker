@@ -56,8 +56,6 @@ async function main() {
 
   basePrompt += `\n今回レビューしてもらいたい観点は以下です。\n${reviewPoints}`;
 
-  console.log(`Prompt: ${basePrompt}`);
-
   // リポジトリの内容を取得
   const repositoryContents = await getRepositoryContents(repoPath, ignoreFilePath);
 
@@ -93,7 +91,7 @@ async function main() {
                   items: {
                     type: "string",
                   },
-                  description: "指摘箇所の行数とその内容のリスト。",
+                  description: "指摘箇所の行数とその内容のリスト。`ファイルの該当箇所の行番号: 該当コード\n違反内容` の形式で記述してください。",
                 },
               },
               required: ["file_path", "issues"],
@@ -106,8 +104,8 @@ async function main() {
   ];
 
   // モデルのトークン制限に応じて最大トークン数を設定
-  const maxTokens = 128000; // モデルに応じて調整してください
-  const maxPromptTokens = 100000; // 応答のために余裕を残す
+  const maxTokens = 128000 // モデルに応じて調整してください
+  const maxPromptTokens = maxTokens * 0.7; // 応答のために余裕を残す
 
   // バッチ処理の準備
   let batches: FileContent[][] = [];
@@ -140,7 +138,7 @@ async function main() {
     }
 
     try {
-      console.log("Processing batch...");
+      console.log("レビュー中...");
       const response = await openai.chat.completions.create({
         model: "gpt-4o",
         messages: [{ role: "user", content: prompt }],
