@@ -10,7 +10,6 @@
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
-    "@types/dotenv": "^8.2.0",
     "@types/minimatch": "^5.1.2",
     "@types/node": "^22.9.0",
     "typescript": "^5.6.3"

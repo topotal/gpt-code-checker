@@ -36,24 +36,24 @@ export interface FileContent {
   content: string;
 }
 
-export async function getRepositoryContents(repoPath: string): Promise<FileContent[]> {
+export async function getRepositoryContents(
+  repoPath: string,
+  ignoreFilePath?: string
+): Promise<FileContent[]> {
   const fileContents: FileContent[] = [];
-
-  let ignoreFilePath = path.join(repoPath, ".gptignore");
-
   let ignoreList: string[] = [];
+
+  // ignoreFilePathが指定されていない場合のデフォルト設定
+  if (!ignoreFilePath) {
+    ignoreFilePath = path.join(repoPath, ".gptignore");
+  }
+
   try {
     await fs.promises.access(ignoreFilePath, fs.constants.F_OK);
     ignoreList = await getIgnoreList(ignoreFilePath);
   } catch {
-    const here = path.dirname(__filename);
-    ignoreFilePath = path.join(here, ".gptignore");
-    try {
-      await fs.promises.access(ignoreFilePath, fs.constants.F_OK);
-      ignoreList = await getIgnoreList(ignoreFilePath);
-    } catch {
-      ignoreList = [];
-    }
+    // 指定されたignoreFilePathが存在しない場合の処理
+    ignoreList = [];
   }
 
   async function walkDirectory(currentPath: string) {
