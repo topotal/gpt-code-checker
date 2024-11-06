@@ -2,14 +2,22 @@
 
 これは ChatGPT にざっとコードをレビューしてもらうためのツールです。
 
-## 使い方
+## 使う前の準備
+
+リポジトリをクローンしてパッケージをインストールします
+
+```
+yarn install
+```
 
 環境変数にOpenAIのAPI KEYを設定してください
 ```
 OPENAI_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-このリポジトリを Clone してたら以下のようにコマンド実行すると、指定したレビュー観点でレビュをしてくれます
+## 使い方
+
+以下のようにコマンド実行すると、指定したレビュー観点でレビュをしてくれます
 
 ```bash
 npx ts-node main.ts --path ~/xxxxxx --ignore ./.gptignore "セキュリティ上の懸念を指摘してください"
