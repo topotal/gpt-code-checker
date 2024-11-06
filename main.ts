@@ -43,26 +43,26 @@ async function main() {
     }
   }
 
+  if (process.env.OPENAI_API_KEY === undefined) {
+    console.error("環境変数 OPENAI_API_KEY が設定されていません。");
+    return;
+  }
+
   const reviewPoints = reviewPointsArgs
     .map((arg, index) => `${index + 1}. ${arg}`)
     .join("\n");
 
   // basePromptの構築
-  let basePrompt = `以下のコードをレビューし、指摘事項がある場合は日本語で報告してください。懸念がない場合は何も応答しないでください。\n`;
+  let basePrompt = `指定された観点でのみコードをレビューし、指摘事項がある場合は日本語で報告してください。懸念がない場合は何も応答しないでください。\n`;
+
+  basePrompt += `\n今回レビューしてもらいたい観点は以下です。\n${reviewPoints}`;
 
   if (contextContent) {
     basePrompt += `\n以下は追加のコンテキストです。レビュー時に考慮してください:\n${contextContent}\n`;
   }
 
-  basePrompt += `\n今回レビューしてもらいたい観点は以下です。\n${reviewPoints}`;
-
   // リポジトリの内容を取得
   const repositoryContents = await getRepositoryContents(repoPath, ignoreFilePath);
-
-  if (process.env.OPENAI_API_KEY === undefined) {
-    console.error("環境変数 OPENAI_API_KEY が設定されていません。");
-    return;
-  }
 
   // OpenAI APIの設定
   const openai = new OpenAI({
