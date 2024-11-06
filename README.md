@@ -19,6 +19,9 @@ OPENAI_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 以下のようにコマンド実行すると、指定したレビュー観点でレビュをしてくれます
 
+> [!WARNING]
+> このツールは gpt-4o を使用するため、膨大なファイルのレビューを行うとコストがかかります。実行頻度や範囲は慎重に定めてください。
+
 ```bash
 npx ts-node main.ts --path ~/xxxxxx --ignore ./.gptignore "セキュリティ上の懸念を指摘してください"
 
